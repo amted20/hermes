@@ -13,12 +13,12 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2 
+        uses: actions/checkout@v3
 
       - name: Run app.js
         env:
           USER_TOKEN: ${{ secrets.USER_TOKEN }}
         run: |
-          apk add --no-cache nodejs npm
+          apk add --no-cache nodejs=20.11.1 npm
           npm install
           node app.js
