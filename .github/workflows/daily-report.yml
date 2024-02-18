@@ -1,26 +1,24 @@
-# name: daily-report
+name: daily-report
 
-# on:
-#   schedule:
-#     - cron: '*/5 * * * *'
-#   workflow_dispatch:
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
 
-# jobs:
-#   run-js:
-#     runs-on: ubuntu-latest
-#     container:
-#       image: alpine:latest
+jobs:
+  run-js:
+    runs-on: ubuntu-latest
 
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@v3
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-#       - name: Run app.js
-#         env:
-#           USER_TOKEN: ${{ secrets.USER_TOKEN }}
-#         run: |
-#           apk add --no-cache curl bash
-#           curl -L https://raw.githubusercontent.com/tj/n/master/bin/n -o n
-#           bash n stable
-#           npm install
-#           node app.js
+      - name: Use Node.js and run app.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+        env:
+          USER_TOKEN: ${{ secrets.USER_TOKEN }}
+        run: |
+          npm install
+          node app.js
