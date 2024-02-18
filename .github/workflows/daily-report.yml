@@ -2,7 +2,7 @@ name: daily-report
 
 on:
   schedule:
-    - cron: '*/15 * * * *'
+    - cron: '*/5 * * * *'
   workflow_dispatch:
 
 jobs:
@@ -19,6 +19,8 @@ jobs:
         env:
           USER_TOKEN: ${{ secrets.USER_TOKEN }}
         run: |
-          apk add --no-cache nodejs=20.11.1 npm
+          apk add --no-cache curl bash
+          curl -L https://raw.githubusercontent.com/tj/n/master/bin/n -o n
+          bash n stable
           npm install
           node app.js
