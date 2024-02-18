@@ -2,12 +2,23 @@ name: daily-report
 
 on:
   schedule:
-    - cron: '15 * * * *'
+    - cron: '*/15 * * * *'
   workflow_dispatch:
 
 jobs:
-  my-job:
+  run-js:
     runs-on: ubuntu-latest
+    container:
+      image: alpine:latest
+
     steps:
-      - name: first-step
-        run: echo "hello world"
+      - name: Checkout repository
+        uses: actions/checkout@v2 
+
+      - name: Run app.js
+        env:
+          USER_TOKEN: ${{ secrets.USER_TOKEN }}
+        run: |
+          apk add --no-cache nodejs npm
+          npm install
+          node app.js
