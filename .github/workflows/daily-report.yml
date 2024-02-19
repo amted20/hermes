@@ -27,6 +27,3 @@ jobs:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_NAME: ${{ secrets.DB_NAME }}
-
-      - name: Check for env
-        run: echo "Using db name: $DB_NAME"
