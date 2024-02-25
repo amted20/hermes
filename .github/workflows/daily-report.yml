@@ -2,7 +2,7 @@ name: daily-report
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '0 19 * * *'
   workflow_dispatch:
 
 jobs:
@@ -27,3 +27,5 @@ jobs:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_NAME: ${{ secrets.DB_NAME }}
+          API_KEY: ${{ secrets.API_KEY }}
+          KEY_WORDS: ${{ secrets.KEY_WORDS }}

@@ -1,57 +1,70 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 
-// import mongoose from 'mongoose';
-// import Item from './itemModel.js';
+import mongoose from "mongoose";
+import Article from "./articleModel.js";
 
+const getEverythingNews = async () => {
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const formattedDate = yesterday.toISOString().split("T")[0];
 
-const envVarOne = process.env.USER_TOKEN;
-console.log("Hello world");
-console.log(`this is the env var: ${envVarOne}`);
-console.log(`Current Node.js version: ${process.version}`)
+  const apiKey = process.env.API_KEY;
+  const keyWords = process.env.KEY_WORDS;
+  const url = `https://newsapi.org/v2/everything?q=${keyWords}&from=${formattedDate}&sortBy=popularity&apiKey=${apiKey}`;
 
-const fetchData = async () => {
   try {
-    const response = await fetch('https://jsonplaceholder.typicode.com/todos/1');
-    if (!response.ok) {
-      // If the response is not 2xx, it will throw an error
-      throw new Error('Network response was not ok');
+    const res = await fetch(url);
+    if (!res.ok) {
+      throw new Error("Network response for fetch newsapi was not ok");
     }
-    const data = await response.json();
-    console.log(data);
+    const data = await res.json();
+    const totalResults = data["totalResults"];
+    console.log(`Total: ${totalResults}`);
+
+    const articles = data["articles"];
+    if (articles.length) {
+      for (const article of articles) {
+        const news = {
+          source: article["source"],
+          author: article["author"],
+          title: article["title"],
+          description: article["description"],
+          url: article["url"],
+          urlToImage: article["urlToImage"],
+          publishedAt: article["publishedAt"],
+          content: article["content"],
+        };
+        await createItem(news);
+      }
+    }
   } catch (error) {
-    console.error('There was a problem with your fetch operation:', error);
+    console.error(`Error while fetching data: ${error}`);
+  }
+};
+
+async function createItem(news) {
+  const item = await Article.create(news);
+}
+
+const DB_USERNAME = process.env.DB_USERNAME;
+const DB_PASSWORD = process.env.DB_PASSWORD;
+const DB_NAME = process.env.DB_NAME;
+
+const uri = `mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@cluster01.vyci9s3.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`;
+
+async function connect() {
+  try {
+    await mongoose.connect(uri);
+    console.log("Connected to DB");
+    await getEverythingNews();
+  } catch (error) {
+    console.error(error);
+  } finally {
+    console.log("Closing db connection.");
+    await mongoose.disconnect();
+    console.log("Disconnected from database");
   }
 }
 
-fetchData();
-
-// async function createItem() {
-//     const item = await Item.create({
-//         name: "dan",
-//         resource: "reporter_one"
-//     });
-//     console.log(item)
-// }
-
-// const DB_USERNAME = process.env.DB_USERNAME 
-// const DB_PASSWORD = process.env.DB_PASSWORD 
-// const DB_NAME = process.env.DB_NAME
-
-// const uri = `mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@cluster01.vyci9s3.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`
-
-// async function connect() {
-//     try {
-//         await mongoose.connect(uri);
-//         console.log("connected to MongoDB");
-//         await createItem();
-//     } catch (error) {
-//         console.error(error)
-//     } finally {
-//         console.log("closing db connection.")
-//         await mongoose.disconnect();
-//         console.log('Disconnected from database');
-//     }
-// }
-
-// connect();
+connect();
