@@ -1,0 +1,29 @@
+name: daily-report-bun
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+
+jobs:
+  my-bun-job:
+    name: my-bun-job
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+      - uses: actions/checkout@v4
+
+      - name: Setup bun.js
+      - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: 1.0.29
+
+      - name: Install dependencies and run app.js
+        run: |
+          bun install
+          bun app.js
+        env:
+          USER_TOKEN: ${{ secrets.USER_TOKEN }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_NAME: ${{ secrets.DB_NAME }}

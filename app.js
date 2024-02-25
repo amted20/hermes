@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-import mongoose from 'mongoose';
-import Item from './itemModel.js';
+// import mongoose from 'mongoose';
+// import Item from './itemModel.js';
 
 
 const envVarOne = process.env.USER_TOKEN;
@@ -26,32 +26,32 @@ const fetchData = async () => {
 
 fetchData();
 
-async function createItem() {
-    const item = await Item.create({
-        name: "dan",
-        resource: "reporter_one"
-    });
-    console.log(item)
-}
+// async function createItem() {
+//     const item = await Item.create({
+//         name: "dan",
+//         resource: "reporter_one"
+//     });
+//     console.log(item)
+// }
 
-const DB_USERNAME = process.env.DB_USERNAME 
-const DB_PASSWORD = process.env.DB_PASSWORD 
-const DB_NAME = process.env.DB_NAME
+// const DB_USERNAME = process.env.DB_USERNAME 
+// const DB_PASSWORD = process.env.DB_PASSWORD 
+// const DB_NAME = process.env.DB_NAME
 
-const uri = `mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@cluster01.vyci9s3.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`
+// const uri = `mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@cluster01.vyci9s3.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`
 
-async function connect() {
-    try {
-        await mongoose.connect(uri);
-        console.log("connected to MongoDB");
-        await createItem();
-    } catch (error) {
-        console.error(error)
-    } finally {
-        console.log("closing db connection.")
-        await mongoose.disconnect();
-        console.log('Disconnected from database');
-    }
-}
+// async function connect() {
+//     try {
+//         await mongoose.connect(uri);
+//         console.log("connected to MongoDB");
+//         await createItem();
+//     } catch (error) {
+//         console.error(error)
+//     } finally {
+//         console.log("closing db connection.")
+//         await mongoose.disconnect();
+//         console.log('Disconnected from database');
+//     }
+// }
 
-connect();
+// connect();
