@@ -3,6 +3,8 @@ dotenv.config();
 
 import mongoose from "mongoose";
 import Article from "./articleModel.js";
+import sendEmail from "./email.js";
+import { getTopHeadlineSrcs } from "./topHeadline.js";
 
 const getEverythingNews = async () => {
   const yesterday = new Date();
@@ -24,6 +26,8 @@ const getEverythingNews = async () => {
 
     const articles = data["articles"];
     if (articles.length) {
+      const linkList = [];
+      const topHeadlineSrcs = await getTopHeadlineSrcs();
       for (const article of articles) {
         const news = {
           source: article["source"],
@@ -35,7 +39,19 @@ const getEverythingNews = async () => {
           publishedAt: article["publishedAt"],
           content: article["content"],
         };
+
+        if (topHeadlineSrcs.includes(news.source.name)) {
+          linkList.push({
+            sourceName: news.source.name,
+            title: news.title,
+            url: news.url
+          });
+        }
         await createItem(news);
+      }
+
+      if (linkList.length) {
+        sendEmail(linkList)
       }
     }
   } catch (error) {

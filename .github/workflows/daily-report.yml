@@ -29,3 +29,6 @@ jobs:
           DB_NAME: ${{ secrets.DB_NAME }}
           API_KEY: ${{ secrets.API_KEY }}
           KEY_WORDS: ${{ secrets.KEY_WORDS }}
+          EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
+          EMAIL_APP_PASSWORD: ${{ secrets.EMAIL_APP_PASSWORD }}
+          EMAIL_SEND_TO: ${{ secrets.EMAIL_SEND_TO }}
