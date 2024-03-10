@@ -3,7 +3,7 @@ dotenv.config();
 
 const apiKey = process.env.API_KEY;
 const url = `https://newsapi.org/v2/top-headlines/sources?apiKey=${apiKey}`;
-const topHLs = [];
+const topHLs = process.env.ADDITIONAL_SOURCES.split(", ");
 
 async function getTopHeadlineSrcs() {
   try {

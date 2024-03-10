@@ -15,7 +15,7 @@ function getHTML(bodyList) {
   const listItems = bodyList
     .map(
       (item) =>
-        `<li>Source: ${item.sourceName} \n Title: ${item.title} \n Link: <a href="${item.url}" rel="noreferrer">${item.url}</a> \n</li>`
+        `<li><div>${item.sourceName}</div> <div><a href="${item.url}" rel="noreferrer">${item.title}</a></div></li>`
     )
     .join("");
   const htmContent = `
