@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies and run app.js
         run: |
           npm install
-          node topHeadline.js
+          node app.js
         env:
           USER_TOKEN: ${{ secrets.USER_TOKEN }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
