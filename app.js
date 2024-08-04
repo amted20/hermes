@@ -44,14 +44,14 @@ const getEverythingNews = async () => {
           linkList.push({
             sourceName: news.source.name,
             title: news.title,
-            url: news.url
+            url: news.url,
           });
         }
         await createItem(news);
       }
 
       if (linkList.length) {
-        sendEmail(linkList)
+        sendEmail(linkList);
       }
     }
   } catch (error) {
